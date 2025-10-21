@@ -1,0 +1,178 @@
+{
+  "$schema": "https://tup.app/schema/components/v1",
+  "global": {
+    "fontFamily": "Inter",
+    "iconSet": "heroicons-outline",
+    "pagePadding": 20,
+    "sectionGap": 24,
+    "buttonHeight": 52,
+    "cornerRadius": 16
+  },
+  "components": {
+    "Button": {
+      "props": {
+        "variant": [
+          "primary",
+          "secondary",
+          "ghost"
+        ],
+        "loading": "boolean",
+        "disabled": "boolean"
+      },
+      "tokens": {
+        "height": "{size.buttonHeight}",
+        "radius": "{radius.md}"
+      }
+    },
+    "Chip": {
+      "props": {
+        "selected": "boolean",
+        "label": "string",
+        "icon": "string",
+        "size": [
+          "sm",
+          "md"
+        ]
+      },
+      "tokens": {
+        "radius": "{radius.sm}"
+      }
+    },
+    "Input.Text": {
+      "props": {
+        "label": "string",
+        "placeholder": "string",
+        "value": "string",
+        "error": "string",
+        "secure": "boolean"
+      }
+    },
+    "Form.CodeVerify": {
+      "props": {
+        "length": 6,
+        "timerSec": 60,
+        "onComplete": "function"
+      }
+    },
+    "Modal.Log": {
+      "props": {
+        "id": "string",
+        "title": "string",
+        "type": [
+          "yes_no",
+          "number",
+          "enum",
+          "duration",
+          "preset"
+        ],
+        "unit": "string",
+        "min": "number",
+        "max": "number",
+        "step": "number",
+        "presets": "array"
+      }
+    },
+    "QA.Question": {
+      "props": {
+        "id": "string",
+        "type": [
+          "yes_no",
+          "number",
+          "scale",
+          "enum",
+          "duration",
+          "date"
+        ],
+        "label": "string",
+        "help": "string",
+        "options": "array",
+        "min": "number",
+        "max": "number",
+        "step": "number",
+        "unit": "string",
+        "required": "boolean",
+        "engineKey": "string"
+      }
+    },
+    "QA.Screen": {
+      "props": {
+        "title": "string",
+        "subtitle": "string",
+        "questions": "array",
+        "progress": {
+          "index": "number",
+          "total": "number"
+        }
+      }
+    },
+    "Paywall.Card": {
+      "props": {
+        "title": "string",
+        "bullets": "array",
+        "trialDays": "number",
+        "priceText": "string",
+        "legalLinks": "array"
+      }
+    },
+    "Chart.Projection": {
+      "props": {
+        "current": "number",
+        "potential": "number",
+        "weeks": "number"
+      }
+    },
+    "TBar": {
+      "props": {
+        "score": "number",
+        "trend": "string",
+        "week": "number"
+      }
+    },
+    "DayStrip": {
+      "props": {
+        "days": "array",
+        "selectedIndex": "number"
+      }
+    },
+    "Weekly.Banner": {
+      "props": {
+        "dueAt": "string",
+        "ctaLabel": "string"
+      }
+    },
+    "Weekly.Blocker": {
+      "props": {
+        "title": "string",
+        "subtitle": "string",
+        "ctaLabel": "string"
+      }
+    },
+    "Weekly.Row": {
+      "props": {
+        "id": "string",
+        "label": "string",
+        "display": [
+          "circles",
+          "numbers",
+          "minutes"
+        ],
+        "days": "array",
+        "summary": {
+          "type": [
+            "avg",
+            "sum",
+            "count"
+          ],
+          "value": "number",
+          "unit": "string"
+        },
+        "answerType": [
+          "number",
+          "yes_no",
+          "enum"
+        ],
+        "prefillFromSummary": "boolean"
+      }
+    }
+  }
+}

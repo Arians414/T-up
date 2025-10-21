@@ -1,0 +1,116 @@
+{
+  "color": {
+    "background": "#000000",
+    "surface": {
+      "base": "#0A0A0B",
+      "card": "#1E2128",
+      "elev1": "#121214",
+      "elev2": "#171A1F",
+      "button": "#1E2128",
+      "progressRemainder": "#171A1F"
+    },
+    "text": {
+      "primary": "#F3F4F6",
+      "secondary": "#BDC1CA",
+      "tertiary": "#8C929E",
+      "muted": "#646B78",
+      "quiet": "#BCC1CA",
+      "onAccent": "#FFFFFF",
+      "inverse": "#19191F"
+    },
+    "accent": {
+      "brand": "#FFD54D",
+      "brandDim": "#E7BD38",
+      "selectedOverlay": "#473600",
+      "positive": "#69DB7C",
+      "warning": "#FFD54D",
+      "negative": "#FF6767",
+      "info": "#61DAFB"
+    },
+    "border": {
+      "subtle": "#1E2128",
+      "muted": "#323743",
+      "strong": "#262A33"
+    },
+    "overlay": "rgba(0,0,0,0.6)"
+  },
+  "type": {
+    "fontFamily": "Inter",
+    "scale": {
+      "xs": 11,
+      "sm": 13,
+      "md": 15,
+      "lg": 17,
+      "xl": 22,
+      "xxl": 28
+    },
+    "weight": {
+      "regular": 400,
+      "medium": 500,
+      "semibold": 600,
+      "bold": 700
+    },
+    "lineHeight": {
+      "tight": 1.15,
+      "snug": 1.25,
+      "normal": 1.35,
+      "relaxed": 1.5
+    }
+  },
+  "radius": {
+    "xs": 8,
+    "sm": 12,
+    "md": 16,
+    "lg": 20,
+    "xl": 28,
+    "control": 16,
+    "card": 24,
+    "pill": 999
+  },
+  "space": {
+    "2": 2,
+    "4": 4,
+    "6": 6,
+    "8": 8,
+    "10": 10,
+    "12": 12,
+    "16": 16,
+    "20": 20,
+    "24": 24,
+    "28": 28,
+    "32": 32,
+    "40": 40,
+    "pagePadding": 20,
+    "sectionGap": 24
+  },
+  "size": {
+    "buttonHeight": 52,
+    "tap": 44,
+    "icon": {
+      "sm": 16,
+      "md": 20,
+      "lg": 24,
+      "xl": 32
+    }
+  },
+  "elevation": {
+    "card": 2,
+    "sheet": 12,
+    "toast": 16
+  },
+  "shadow": {
+    "sm": "0 1 2 rgba(0,0,0,0.35)",
+    "md": "0 8 24 rgba(0,0,0,0.45)",
+    "lg": "0 16 32 rgba(0,0,0,0.55)"
+  },
+  "opacity": {
+    "disabled": 0.5,
+    "overlay": 0.6
+  },
+  "motion": {
+    "fast": 120,
+    "base": 200,
+    "slow": 320,
+    "curve": "cubic-bezier(0.2,0.8,0.2,1)"
+  }
+}

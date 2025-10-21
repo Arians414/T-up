@@ -1,0 +1,98 @@
+﻿{
+  "colors": {
+    "Background": {
+      "token": "color.background",
+      "value": "#000000"
+    },
+    "Text/Primary": {
+      "token": "color.text.primary",
+      "value": "#F3F4F6"
+    },
+    "Text/OnAccent": {
+      "token": "color.text.onAccent",
+      "value": "#FFFFFF"
+    },
+    "Accent/Brand": {
+      "token": "color.accent.brand",
+      "value": "#FFD54D"
+    },
+    "Surface/Button": {
+      "token": "color.surface.button",
+      "value": "#1E2128"
+    },
+    "Surface/ProgressRemainder": {
+      "token": "color.surface.progressRemainder",
+      "value": "#171A1F"
+    },
+    "Accent/SelectedOverlay": {
+      "token": "color.accent.selectedOverlay",
+      "value": "#473600"
+    }
+  },
+  "text": {
+    "H1": {
+      "tokens": {
+        "size": "type.scale.xxl",
+        "weight": "type.weight.semibold"
+      },
+      "fontFamily": "Inter",
+      "fontSize": 28,
+      "lineHeightPercent": 125
+    },
+    "H2": {
+      "tokens": {
+        "size": "type.scale.xl",
+        "weight": "type.weight.semibold"
+      },
+      "fontFamily": "Inter",
+      "fontSize": 22,
+      "lineHeightPercent": 125
+    },
+    "Title": {
+      "tokens": {
+        "size": "type.scale.lg",
+        "weight": "type.weight.semibold"
+      },
+      "fontFamily": "Inter",
+      "fontSize": 17,
+      "lineHeightPercent": 125
+    },
+    "Body": {
+      "tokens": {
+        "size": "type.scale.md",
+        "weight": "type.weight.regular"
+      },
+      "fontFamily": "Inter",
+      "fontSize": 15,
+      "lineHeightPercent": 135
+    },
+    "Label": {
+      "tokens": {
+        "size": "type.scale.sm",
+        "weight": "type.weight.medium"
+      },
+      "fontFamily": "Inter",
+      "fontSize": 13,
+      "lineHeightPercent": 125
+    }
+  },
+  "variables": {
+    "pagePadding": {
+      "token": "space.pagePadding",
+      "value": 20
+    },
+    "sectionGap": {
+      "token": "space.sectionGap",
+      "value": 24
+    },
+    "buttonHeight": {
+      "token": "size.buttonHeight",
+      "value": 52
+    },
+    "radius": {
+      "token": "radius.control",
+      "value": 16
+    }
+  }
+}
+

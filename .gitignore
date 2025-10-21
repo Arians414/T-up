@@ -1,0 +1,74 @@
+# Learn more https://docs.github.com/en/get-started/getting-started-with-git/ignoring-files
+
+# dependencies
+node_modules/
+
+# Expo
+.expo/
+dist/
+web-build/
+expo-env.d.ts
+
+# Native
+.kotlin/
+*.orig.*
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+
+# Metro
+.metro-health-check*
+
+# debug
+npm-debug.*
+yarn-debug.*
+yarn-error.*
+
+# macOS
+.DS_Store
+*.pem
+
+# local env files
+.env*.local
+
+# typescript
+*.tsbuildinfo
+
+# generated native folders
+/ios
+/android
+config/figma.config.json
+
+# Secrets (root-level)
+.env
+.env.*
+supabase/.env.functions
+supabase/functions/.env
+supabase/functions/.env.*
+# binaries / installers
+*.exe
+*.msi
+*.nupkg
+*.tar.gz
+
+# local logs / dumps / temp exports
+*.log
+schema_dump.sql
+schema_data.sql
+release.json
+temp.txt
+Generated_Image_*.png
+T-Up_schemas_v2/
+[step].tsx
+stripe_listen_err.log
+stripe_listen_out.log
+functions_err.log
+functions_out.log
+supabase.exe
+stripe.exe
+supabase_windows_amd64.tar.gz
+base rules/
+studies and files/
+screens/

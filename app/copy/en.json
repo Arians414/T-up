@@ -1,0 +1,31 @@
+{
+  "brand": {
+    "tagline": "More T. More drive. More you.",
+    "promise": "Crush three simple wins every day, recalibrate weekly, and build testosterone the hard‑and‑true way—naturally, for men only."
+  },
+  "home": {
+    "heroTitle": "Today’s estimate",
+    "projection": "8‑week projection",
+    "wins": "Today’s 3 wins"
+  },
+  "coach": {
+    "weekHeader": "Week {X} of 8",
+    "locked": "Opens Sun 18:00",
+    "cta": "Review week"
+  },
+  "toasts": {
+    "markedDone": "Marked {DAY} as done",
+    "weekUpdated": "Week updated — projection adjusted"
+  },
+  "risk": {
+    "low": "Low risk",
+    "borderline": "Borderline",
+    "high": "High risk"
+  },
+  "safety": {
+    "clinic": "Consider labs & a clinician"
+  },
+  "therapy": {
+    "on": "Focus mode: numbers hidden"
+  }
+}

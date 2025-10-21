@@ -1,0 +1,245 @@
+{
+  "title": "Full Intake",
+  "subtitle": "Training, sleep, and habits",
+  "progressTotal": 1,
+  "sections": [
+    {
+      "title": "Sleep",
+      "questions": [
+        {
+          "id": "sleep_hours_avg",
+          "type": "number",
+          "label": "Average sleep per night",
+          "min": 3,
+          "max": 12,
+          "step": 0.5,
+          "unit": "hours",
+          "required": true,
+          "engineKey": "sleep_hours_avg"
+        },
+        {
+          "id": "sleep_regular",
+          "type": "enum",
+          "label": "Sleep schedule regularity",
+          "options": [
+            "Regular (\u00b11h)",
+            "Irregular",
+            "Shift work"
+          ],
+          "required": true,
+          "engineKey": "sleep_regular"
+        },
+        {
+          "id": "snoring_pauses",
+          "type": "yes_no",
+          "label": "Snoring or breathing pauses noticed?",
+          "required": true,
+          "engineKey": "snoring_or_pauses"
+        }
+      ]
+    },
+    {
+      "title": "Training & Activity",
+      "questions": [
+        {
+          "id": "rt_sessions_week",
+          "type": "number",
+          "label": "Resistance training per week",
+          "min": 0,
+          "max": 14,
+          "step": 1,
+          "unit": "sessions",
+          "required": true,
+          "engineKey": "rt_sessions_week"
+        },
+        {
+          "id": "cardio_minutes_week",
+          "type": "number",
+          "label": "Cardio minutes per week",
+          "min": 0,
+          "max": 2000,
+          "step": 10,
+          "unit": "min",
+          "required": true,
+          "engineKey": "cardio_minutes_week"
+        }
+      ]
+    },
+    {
+      "title": "Nutrition & Habits",
+      "questions": [
+        {
+          "id": "protein_days_week",
+          "type": "number",
+          "label": "High-protein days per week",
+          "min": 0,
+          "max": 7,
+          "step": 1,
+          "unit": "days",
+          "required": true,
+          "engineKey": "protein_days_week"
+        },
+        {
+          "id": "fast_food_days_week",
+          "type": "number",
+          "label": "Fast food days per week",
+          "min": 0,
+          "max": 7,
+          "step": 1,
+          "unit": "days",
+          "required": true,
+          "engineKey": "fast_food_days_week"
+        },
+        {
+          "id": "sugary_days_week",
+          "type": "enum",
+          "label": "Sugary drinks \u2014 days per week",
+          "options": [
+            "0",
+            "1\u20132",
+            "3\u20135",
+            "Most days",
+            "Daily"
+          ],
+          "required": true,
+          "engineKey": "sugary_days_week"
+        },
+        {
+          "id": "sugary_drinks_per_day",
+          "type": "number",
+          "label": "If Most/Daily: how many per day?",
+          "min": 0,
+          "max": 12,
+          "step": 1,
+          "unit": "drinks",
+          "required": false,
+          "dependsOn": {
+            "id": "sugary_days_week",
+            "anyOf": [
+              "Most days",
+              "Daily"
+            ]
+          },
+          "engineKey": "sugary_per_day"
+        }
+      ]
+    },
+    {
+      "title": "Smoking",
+      "questions": [
+        {
+          "id": "smoke_now",
+          "type": "yes_no",
+          "label": "Do you currently smoke?",
+          "required": true,
+          "engineKey": "smoke_now"
+        },
+        {
+          "id": "smoke_type",
+          "type": "enum",
+          "label": "If Yes: type",
+          "options": [
+            "Cigarettes",
+            "Cigar",
+            "Vape",
+            "Other"
+          ],
+          "required": false,
+          "dependsOn": {
+            "id": "smoke_now",
+            "equals": true
+          },
+          "engineKey": "smoke_type"
+        },
+        {
+          "id": "smoke_amount_per_day",
+          "type": "number",
+          "label": "If Yes: how many per day",
+          "min": 0,
+          "max": 60,
+          "step": 1,
+          "unit": "/day",
+          "required": false,
+          "dependsOn": {
+            "id": "smoke_now",
+            "equals": true
+          },
+          "engineKey": "smoke_per_day"
+        }
+      ]
+    },
+    {
+      "title": "Other Health & Context",
+      "questions": [
+        {
+          "id": "alcohol_drinks_14d",
+          "type": "number",
+          "label": "Alcohol (drinks in past 14 days)",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "drinks",
+          "required": true,
+          "engineKey": "alcohol_14d"
+        },
+        {
+          "id": "meds_any",
+          "type": "yes_no",
+          "label": "Any of these meds?",
+          "required": true,
+          "engineKey": "meds_any"
+        },
+        {
+          "id": "meds_list",
+          "type": "multi",
+          "label": "If Yes: which?",
+          "options": [
+            "Opioids",
+            "Glucocorticoids",
+            "Finasteride/Dutasteride",
+            "Other"
+          ],
+          "required": false,
+          "dependsOn": {
+            "id": "meds_any",
+            "equals": true
+          },
+          "engineKey": "meds_list"
+        },
+        {
+          "id": "trt_or_steroids_3m",
+          "type": "yes_no",
+          "label": "TRT / steroids in past 3 months",
+          "required": true,
+          "engineKey": "trt_or_steroids"
+        },
+        {
+          "id": "diabetes_or_prediabetes",
+          "type": "yes_no",
+          "label": "Diabetes or pre-diabetes",
+          "required": true,
+          "engineKey": "diabetes_prediabetes"
+        },
+        {
+          "id": "htn_or_apnea_dx",
+          "type": "yes_no",
+          "label": "High blood pressure or diagnosed sleep apnea",
+          "required": true,
+          "engineKey": "htn_or_apnea"
+        },
+        {
+          "id": "weight_change_3m",
+          "type": "enum",
+          "label": "Weight change (last 3 months)",
+          "options": [
+            "Losing",
+            "Stable",
+            "Gaining"
+          ],
+          "required": true,
+          "engineKey": "weight_change_3m"
+        }
+      ]
+    }
+  ]
+}

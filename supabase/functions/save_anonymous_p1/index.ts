@@ -1,0 +1,77 @@
+import { serve } from "https://deno.land/std@0.224.0/http/server.ts";
+import { getServiceSupabaseClient, jsonResponse, logToAppLogs, corsHeaders, z } from "../_shared/utils.ts";
+
+const requestSchema = z.object({
+  install_id: z.string().uuid(),
+  payload: z.object({}).passthrough(),
+  schema_version: z.string().min(1),
+});
+
+serve(async (req) => {
+  const hasAuthHeader = !!req.headers.get("Authorization");
+
+  await logToAppLogs({
+    event: "save_anonymous_p1.request",
+    source: "edge",
+    severity: "info",
+    details: {
+      method: req.method,
+      userAgent: req.headers.get("user-agent") ?? undefined,
+      hasAuthHeader,
+    },
+  });
+
+  if (req.method === "OPTIONS") {
+    return new Response(null, { status: 204, headers: corsHeaders });
+  }
+
+  if (req.method !== "POST") {
+    return jsonResponse({ ok: false, error: "Method not allowed" }, 405);
+  }
+
+  let parsed: z.infer<typeof requestSchema>;
+  try {
+    const json = await req.json();
+    parsed = requestSchema.parse(json);
+  } catch (error) {
+    await logToAppLogs({
+      event: "save_anonymous_p1",
+      source: "edge",
+      severity: "warn",
+      details: { reason: "invalid_payload", error: error instanceof Error ? error.message : String(error) },
+    });
+    return jsonResponse({ ok: false, error: "Invalid payload" }, 400);
+  }
+
+  try {
+    const supabase = getServiceSupabaseClient();
+    const { data, error } = await supabase
+      .from("anonymous_intake_p1_submissions")
+      .insert({
+        install_id: parsed.install_id,
+        payload: parsed.payload,
+        schema_version: parsed.schema_version,
+        intake_locked: false,
+      })
+      .select("submission_id")
+      .single();
+
+    if (error) {
+      await logToAppLogs({
+        event: "save_anonymous_p1",
+        source: "edge",
+        details: { supabaseError: error },
+      });
+      return jsonResponse({ ok: false, error: "Failed to save intake" }, 500);
+    }
+
+    return jsonResponse({ ok: true, submission_id: data.submission_id });
+  } catch (error) {
+    await logToAppLogs({
+      event: "save_anonymous_p1",
+      source: "edge",
+      details: { error: error instanceof Error ? error.message : String(error) },
+    });
+    return jsonResponse({ ok: false, error: "Unexpected error" }, 500);
+  }
+});

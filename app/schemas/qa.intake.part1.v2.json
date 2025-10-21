@@ -1,0 +1,127 @@
+{
+  "title": "First Intake",
+  "subtitle": "Tell us about you",
+  "progressTotal": 1,
+  "questions": [
+    {
+      "id": "age",
+      "type": "number",
+      "label": "Age",
+      "min": 18,
+      "max": 90,
+      "unit": "years",
+      "required": true,
+      "engineKey": "age_years"
+    },
+    {
+      "id": "height_cm",
+      "type": "number",
+      "label": "Height",
+      "min": 120,
+      "max": 220,
+      "unit": "cm",
+      "required": true,
+      "engineKey": "height_cm"
+    },
+    {
+      "id": "weight_kg",
+      "type": "number",
+      "label": "Weight",
+      "min": 40,
+      "max": 200,
+      "unit": "kg",
+      "required": true,
+      "engineKey": "weight_kg"
+    },
+    {
+      "id": "waist_cm",
+      "type": "number",
+      "label": "Waist circumference",
+      "min": 60,
+      "max": 160,
+      "unit": "cm",
+      "required": true,
+      "engineKey": "waist_cm"
+    },
+    {
+      "id": "energy_1_10",
+      "type": "scale",
+      "label": "Energy most days",
+      "min": 1,
+      "max": 10,
+      "step": 1,
+      "required": true,
+      "engineKey": "energy_scale"
+    },
+    {
+      "id": "stress_0_10",
+      "type": "scale",
+      "label": "Stress most days",
+      "min": 0,
+      "max": 10,
+      "step": 1,
+      "required": true,
+      "engineKey": "stress_scale"
+    },
+    {
+      "id": "daylight_exposure",
+      "type": "enum",
+      "label": "Daily daylight / sun exposure",
+      "options": [
+        "None",
+        "<15 min",
+        "15\u201330 min",
+        "30\u201360 min",
+        "60+ min"
+      ],
+      "required": true,
+      "engineKey": "daylight_bucket"
+    },
+    {
+      "id": "morning_erections_per_week",
+      "type": "number",
+      "label": "Morning erections per week",
+      "min": 0,
+      "max": 7,
+      "step": 1,
+      "unit": "days",
+      "required": true,
+      "engineKey": "am_erections_days"
+    },
+    {
+      "id": "low_sex_drive",
+      "type": "yes_no",
+      "label": "Low sex drive",
+      "required": true,
+      "engineKey": "low_libido"
+    },
+    {
+      "id": "erection_difficulties",
+      "type": "yes_no",
+      "label": "Erection difficulties",
+      "required": true,
+      "engineKey": "erectile_difficulty"
+    },
+    {
+      "id": "less_confident",
+      "type": "yes_no",
+      "label": "Feel less confident or manly than before?",
+      "required": true,
+      "engineKey": "less_confident"
+    },
+    {
+      "id": "moody_anxious",
+      "type": "yes_no",
+      "label": "Irritable, moody, or anxious more often?",
+      "required": true,
+      "engineKey": "mood_anxious"
+    },
+    {
+      "id": "lost_drive",
+      "type": "yes_no",
+      "label": "Lost drive or clarity in life?",
+      "required": true,
+      "engineKey": "lost_drive"
+    }
+  ]
+}

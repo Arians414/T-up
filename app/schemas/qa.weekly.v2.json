@@ -1,0 +1,571 @@
+{
+  "title": "Weekly check-in",
+  "anchor": "trial_started_at",
+  "opensAtLocalHour": 19,
+  "rows": [
+    {
+      "id": "rt_sessions_week",
+      "label": "Strength workouts",
+      "display": "circles",
+      "days": [
+        {
+          "day": "Mon"
+        },
+        {
+          "day": "Tue"
+        },
+        {
+          "day": "Wed"
+        },
+        {
+          "day": "Thu"
+        },
+        {
+          "day": "Fri"
+        },
+        {
+          "day": "Sat"
+        },
+        {
+          "day": "Sun"
+        }
+      ],
+      "summary": {
+        "type": "count",
+        "value": 0,
+        "unit": "sessions"
+      },
+      "answerType": "number",
+      "prefillFromSummary": true
+    },
+    {
+      "id": "cardio_minutes",
+      "label": "Cardio minutes",
+      "display": "minutes",
+      "days": [
+        {
+          "day": "Mon"
+        },
+        {
+          "day": "Tue"
+        },
+        {
+          "day": "Wed"
+        },
+        {
+          "day": "Thu"
+        },
+        {
+          "day": "Fri"
+        },
+        {
+          "day": "Sat"
+        },
+        {
+          "day": "Sun"
+        }
+      ],
+      "summary": {
+        "type": "sum",
+        "value": 0,
+        "unit": "min"
+      },
+      "answerType": "number",
+      "prefillFromSummary": true
+    },
+    {
+      "id": "sleep_hours",
+      "label": "Sleep (hours/night)",
+      "display": "numbers",
+      "days": [
+        {
+          "day": "Mon"
+        },
+        {
+          "day": "Tue"
+        },
+        {
+          "day": "Wed"
+        },
+        {
+          "day": "Thu"
+        },
+        {
+          "day": "Fri"
+        },
+        {
+          "day": "Sat"
+        },
+        {
+          "day": "Sun"
+        }
+      ],
+      "summary": {
+        "type": "avg",
+        "value": 0,
+        "unit": "h"
+      },
+      "answerType": "number",
+      "prefillFromSummary": true
+    },
+    {
+      "id": "sleep_regular_days",
+      "label": "Sleep regularity (days within \u00b11h)",
+      "display": "circles",
+      "days": [
+        {
+          "day": "Mon"
+        },
+        {
+          "day": "Tue"
+        },
+        {
+          "day": "Wed"
+        },
+        {
+          "day": "Thu"
+        },
+        {
+          "day": "Fri"
+        },
+        {
+          "day": "Sat"
+        },
+        {
+          "day": "Sun"
+        }
+      ],
+      "summary": {
+        "type": "count",
+        "value": 0,
+        "unit": "days"
+      },
+      "answerType": "number",
+      "prefillFromSummary": true
+    },
+    {
+      "id": "protein_days",
+      "label": "Protein days",
+      "display": "circles",
+      "days": [
+        {
+          "day": "Mon"
+        },
+        {
+          "day": "Tue"
+        },
+        {
+          "day": "Wed"
+        },
+        {
+          "day": "Thu"
+        },
+        {
+          "day": "Fri"
+        },
+        {
+          "day": "Sat"
+        },
+        {
+          "day": "Sun"
+        }
+      ],
+      "summary": {
+        "type": "count",
+        "value": 0,
+        "unit": "days"
+      },
+      "answerType": "number",
+      "prefillFromSummary": true
+    },
+    {
+      "id": "sunlight_days",
+      "label": "Sunlight exposure days",
+      "display": "circles",
+      "days": [
+        {
+          "day": "Mon"
+        },
+        {
+          "day": "Tue"
+        },
+        {
+          "day": "Wed"
+        },
+        {
+          "day": "Thu"
+        },
+        {
+          "day": "Fri"
+        },
+        {
+          "day": "Sat"
+        },
+        {
+          "day": "Sun"
+        }
+      ],
+      "summary": {
+        "type": "count",
+        "value": 0,
+        "unit": "days"
+      },
+      "answerType": "number",
+      "prefillFromSummary": true
+    },
+    {
+      "id": "fast_food_days",
+      "label": "Fast food days",
+      "display": "numbers",
+      "days": [
+        {
+          "day": "Mon"
+        },
+        {
+          "day": "Tue"
+        },
+        {
+          "day": "Wed"
+        },
+        {
+          "day": "Thu"
+        },
+        {
+          "day": "Fri"
+        },
+        {
+          "day": "Sat"
+        },
+        {
+          "day": "Sun"
+        }
+      ],
+      "summary": {
+        "type": "sum",
+        "value": 0,
+        "unit": "days"
+      },
+      "answerType": "number",
+      "prefillFromSummary": true
+    },
+    {
+      "id": "sugary_drinks",
+      "label": "Sugary drinks (total)",
+      "display": "numbers",
+      "days": [
+        {
+          "day": "Mon"
+        },
+        {
+          "day": "Tue"
+        },
+        {
+          "day": "Wed"
+        },
+        {
+          "day": "Thu"
+        },
+        {
+          "day": "Fri"
+        },
+        {
+          "day": "Sat"
+        },
+        {
+          "day": "Sun"
+        }
+      ],
+      "summary": {
+        "type": "sum",
+        "value": 0,
+        "unit": "drinks"
+      },
+      "answerType": "number",
+      "prefillFromSummary": true
+    },
+    {
+      "id": "am_erections",
+      "label": "Morning erections",
+      "display": "circles",
+      "days": [
+        {
+          "day": "Mon"
+        },
+        {
+          "day": "Tue"
+        },
+        {
+          "day": "Wed"
+        },
+        {
+          "day": "Thu"
+        },
+        {
+          "day": "Fri"
+        },
+        {
+          "day": "Sat"
+        },
+        {
+          "day": "Sun"
+        }
+      ],
+      "summary": {
+        "type": "count",
+        "value": 0,
+        "unit": "days"
+      },
+      "answerType": "number",
+      "prefillFromSummary": true
+    },
+    {
+      "id": "alcohol_drinks",
+      "label": "Alcohol (drinks)",
+      "display": "numbers",
+      "days": [
+        {
+          "day": "Mon"
+        },
+        {
+          "day": "Tue"
+        },
+        {
+          "day": "Wed"
+        },
+        {
+          "day": "Thu"
+        },
+        {
+          "day": "Fri"
+        },
+        {
+          "day": "Sat"
+        },
+        {
+          "day": "Sun"
+        }
+      ],
+      "summary": {
+        "type": "sum",
+        "value": 0,
+        "unit": "drinks"
+      },
+      "answerType": "number",
+      "prefillFromSummary": true
+    },
+    {
+      "id": "smoke_amount",
+      "label": "Smoking amount",
+      "display": "numbers",
+      "days": [
+        {
+          "day": "Mon"
+        },
+        {
+          "day": "Tue"
+        },
+        {
+          "day": "Wed"
+        },
+        {
+          "day": "Thu"
+        },
+        {
+          "day": "Fri"
+        },
+        {
+          "day": "Sat"
+        },
+        {
+          "day": "Sun"
+        }
+      ],
+      "summary": {
+        "type": "sum",
+        "value": 0,
+        "unit": "/day"
+      },
+      "answerType": "number",
+      "prefillFromSummary": true
+    },
+    {
+      "id": "vaping_level",
+      "label": "Vaping level",
+      "display": "circles",
+      "days": [
+        {
+          "day": "Mon"
+        },
+        {
+          "day": "Tue"
+        },
+        {
+          "day": "Wed"
+        },
+        {
+          "day": "Thu"
+        },
+        {
+          "day": "Fri"
+        },
+        {
+          "day": "Sat"
+        },
+        {
+          "day": "Sun"
+        }
+      ],
+      "summary": {
+        "type": "count",
+        "value": 0,
+        "unit": "days"
+      },
+      "answerType": "number",
+      "prefillFromSummary": true
+    },
+    {
+      "id": "weed_joints",
+      "label": "Weed (joints)",
+      "display": "numbers",
+      "days": [
+        {
+          "day": "Mon"
+        },
+        {
+          "day": "Tue"
+        },
+        {
+          "day": "Wed"
+        },
+        {
+          "day": "Thu"
+        },
+        {
+          "day": "Fri"
+        },
+        {
+          "day": "Sat"
+        },
+        {
+          "day": "Sun"
+        }
+      ],
+      "summary": {
+        "type": "sum",
+        "value": 0,
+        "unit": "joints"
+      },
+      "answerType": "number",
+      "prefillFromSummary": true
+    },
+    {
+      "id": "energy_1_10",
+      "label": "Energy (1\u201310)",
+      "display": "numbers",
+      "days": [
+        {
+          "day": "Mon"
+        },
+        {
+          "day": "Tue"
+        },
+        {
+          "day": "Wed"
+        },
+        {
+          "day": "Thu"
+        },
+        {
+          "day": "Fri"
+        },
+        {
+          "day": "Sat"
+        },
+        {
+          "day": "Sun"
+        }
+      ],
+      "summary": {
+        "type": "avg",
+        "value": 0,
+        "unit": ""
+      },
+      "answerType": "number",
+      "prefillFromSummary": false
+    },
+    {
+      "id": "stress_0_10",
+      "label": "Stress (0\u201310)",
+      "display": "numbers",
+      "days": [
+        {
+          "day": "Mon"
+        },
+        {
+          "day": "Tue"
+        },
+        {
+          "day": "Wed"
+        },
+        {
+          "day": "Thu"
+        },
+        {
+          "day": "Fri"
+        },
+        {
+          "day": "Sat"
+        },
+        {
+          "day": "Sun"
+        }
+      ],
+      "summary": {
+        "type": "avg",
+        "value": 0,
+        "unit": ""
+      },
+      "answerType": "number",
+      "prefillFromSummary": false
+    },
+    {
+      "id": "weight_trend",
+      "label": "Weight trend",
+      "display": "circles",
+      "days": [
+        {
+          "day": "Mon"
+        },
+        {
+          "day": "Tue"
+        },
+        {
+          "day": "Wed"
+        },
+        {
+          "day": "Thu"
+        },
+        {
+          "day": "Fri"
+        },
+        {
+          "day": "Sat"
+        },
+        {
+          "day": "Sun"
+        }
+      ],
+      "summary": {
+        "type": "count",
+        "value": 0,
+        "unit": ""
+      },
+      "answerType": "enum",
+      "prefillFromSummary": false
+    }
+  ],
+  "submit": {
+    "ctaLabel": "Complete weekly update",
+    "post": "/weekly-result"
+  }
+}

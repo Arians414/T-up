@@ -1,0 +1,83 @@
+{
+  "colors": [
+    {
+      "name": "Text/Muted",
+      "figmaValue": "#9095A0",
+      "expectedToken": "color.text.muted",
+      "tokenValue": "#646B78",
+      "note": "Figma style still using #9095A0; update Figma style or tokens to resolve."
+    },
+    {
+      "name": "Surface/Button",
+      "figmaValue": "#00000000",
+      "expectedToken": "color.surface.button",
+      "tokenValue": "#1E2128",
+      "note": "Transparent button background detected; ensure style applies the Surface/Button fill."
+    }
+  ],
+  "text": [
+    {
+      "name": "H1",
+      "expected": "Inter 28 / 125%",
+      "status": "no usage nodes",
+      "note": "Apply shared text style to at least one node so sync can confirm values."
+    },
+    {
+      "name": "H2",
+      "expected": "Inter 22 / 125%",
+      "status": "no usage nodes"
+    },
+    {
+      "name": "Title",
+      "expected": "Inter 17 / 125%",
+      "status": "no usage nodes"
+    },
+    {
+      "name": "Body",
+      "expected": "Inter 15 / 135%",
+      "status": "no usage nodes"
+    },
+    {
+      "name": "Label",
+      "expected": "Inter 13 / 125%",
+      "status": "no usage nodes"
+    }
+  ],
+  "variables": [
+    {
+      "name": "Padding & Radius",
+      "status": "missing",
+      "note": "Figma variables API responded with zero entries; confirm variables are published."
+    }
+  ],
+  "frames": [
+    {
+      "label": "Paywall",
+      "id": "2:3019",
+      "name": "Paywall",
+      "type": "FRAME",
+      "page": null
+    },
+    {
+      "label": "Weekly Check-in",
+      "id": "2:2838",
+      "name": " Weekly Check-In Result",
+      "type": "FRAME",
+      "page": null
+    },
+    {
+      "label": "Log Modal",
+      "id": "2:4408",
+      "name": "Log Sleep",
+      "type": "FRAME",
+      "page": null
+    },
+    {
+      "label": "Home",
+      "id": "2:3036",
+      "name": "Dashboard Home",
+      "type": "FRAME",
+      "page": null
+    }
+  ]
+}
