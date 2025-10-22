@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { useRouter } from "expo-router";
 
@@ -38,6 +38,24 @@ export default function PaywallScreen() {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const trialCtaLabel = useMemo(() => `Start ${paywallConfig.trialDays}-day trial`, []);
+
+  useEffect(() => {
+    if (!__DEV__) {
+      return;
+    }
+
+    supabase.auth.getSession().then(({ data, error }) => {
+      if (error) {
+        console.log("[paywall] failed to read session", error.message);
+        return;
+      }
+      if (data.session?.access_token) {
+        console.log("[paywall] ACCESS TOKEN", data.session.access_token);
+      } else {
+        console.log("[paywall] session is null");
+      }
+    });
+  }, []);
 
   const handleStartTrial = useCallback(async () => {
     if (isSubmitting || isHydrating || hasTrialStarted) {

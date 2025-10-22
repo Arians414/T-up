@@ -55,3 +55,40 @@ WHERE tablename IN (
 SELECT * FROM public.vw_creator_summary LIMIT 5;
 SELECT * FROM public.vw_code_summary LIMIT 5;
 ```
+## 2025-10-21 (Cloud functions deploy)
+
+- Secrets refreshed at 2025-10-21T21:33:16+03:00 via `supabase secrets set --env-file supabase/functions/.env` (Supabase automatically retains reserved `SUPABASE_*` keys).
+- Deployed Stripe + referral functions on project `sxgqbxgeoqsbssiwbbpi`:
+  - https://sxgqbxgeoqsbssiwbbpi.functions.supabase.co/create_checkout_session
+  - https://sxgqbxgeoqsbssiwbbpi.functions.supabase.co/stripe_webhook_core
+  - https://sxgqbxgeoqsbssiwbbpi.functions.supabase.co/admin_create_creator
+  - https://sxgqbxgeoqsbssiwbbpi.functions.supabase.co/admin_create_referral_code
+  - https://sxgqbxgeoqsbssiwbbpi.functions.supabase.co/admin_disable_referral_code
+  - https://sxgqbxgeoqsbssiwbbpi.functions.supabase.co/capture_referral_session
+  - https://sxgqbxgeoqsbssiwbbpi.functions.supabase.co/link_referral_on_signup
+  - https://sxgqbxgeoqsbssiwbbpi.functions.supabase.co/admin_sync_stripe_promo_for_code
+  - https://sxgqbxgeoqsbssiwbbpi.functions.supabase.co/stripe_webhook_referrals
+  - https://sxgqbxgeoqsbssiwbbpi.functions.supabase.co/admin_list_creators
+  - https://sxgqbxgeoqsbssiwbbpi.functions.supabase.co/admin_list_referral_codes
+  - https://sxgqbxgeoqsbssiwbbpi.functions.supabase.co/admin_list_referrals
+  - https://sxgqbxgeoqsbssiwbbpi.functions.supabase.co/admin_run_payout_rollup
+- Stripe CLI helpers:
+  ```bash
+  stripe listen --forward-to https://sxgqbxgeoqsbssiwbbpi.functions.supabase.co/stripe_webhook_core
+  stripe listen --forward-to https://sxgqbxgeoqsbssiwbbpi.functions.supabase.co/stripe_webhook_referrals
+
+  stripe trigger checkout.session.completed
+  stripe trigger customer.subscription.created
+  stripe trigger invoice.payment_succeeded
+  ```
+- Verification queries to run in SQL editor:
+  ```sql
+  SELECT entitlement_status, stripe_customer_id
+  FROM public.profiles
+  WHERE user_id = '<test_user>';
+
+  SELECT *
+  FROM public.referral_revenue_log
+  ORDER BY created_at DESC
+  LIMIT 5;
+  ```

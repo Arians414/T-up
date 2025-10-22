@@ -127,7 +127,7 @@ const logWeeklyError = async (payload: Record<string, unknown>) => {
 export default function WeeklyStepScreen() {
   const router = useRouter();
   const themeTokens = useTheme();
-  const { isHydrating: isAppHydrating, smoking, trialStartedAt, setLastResult } = useAppState();
+  const { isHydrating: isAppHydrating, smoking, trialStartedAt, setLastResult, resetAppState } = useAppState();
   const { isHydrating: isIntakeHydrating } = useIntakeState();
   const { step } = useLocalSearchParams<RouteParams>();
   const filteredSequence = useMemo(() => {
@@ -610,12 +610,7 @@ export default function WeeklyStepScreen() {
             variant="secondary"
             onPress={async () => {
               try {
-                // import useAppState dynamically to avoid circular imports at top-level
-                const mod = await import('@/state/appState');
-                const { useAppState } = mod as any;
-                const ctx = useAppState();
-                await ctx.resetAppState();
-                // route to app root so the app will treat this as a fresh start
+                await resetAppState();
                 router.replace('/');
               } catch (e) {
                 console.warn('Dev jump failed', e);
