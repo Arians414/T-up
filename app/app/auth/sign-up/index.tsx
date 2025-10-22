@@ -1,13 +1,14 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { KeyboardAvoidingView, Platform, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
 import { useRouter } from "expo-router";
 
 import { Button, Progress } from "@/components/ui";
 import { ArrowLeftIcon } from "react-native-heroicons/outline";
 import { getColor, getRadius, getSpacing, theme, useTheme } from "@/theme";
-import { useIntakeState } from "@/state/intakeState";
+import { useIntakeState, extractQuestions } from "@/state/intakeState";
 import { useAppState } from "@/state/appState";
 import { SignInSheetContent } from '../sign-in/index';
+import part1Schema from "@schemas/qa.intake.part1.v2.json";
 
 const SCREEN_PADDING = getSpacing("pagePadding");
 const SECTION_GAP = getSpacing("sectionGap");
@@ -30,8 +31,16 @@ export default function SignUpScreen() {
     setShowSignInSheet(true);
   };
 
+  // Calculate the last intake question index
+  const lastQuestionIndex = useMemo(() => {
+    const questions = extractQuestions(part1Schema);
+    return Math.max(0, questions.length - 1);
+  }, []);
+
   const handleBack = () => {
-    router.replace("/onboarding");
+    // Go back to last intake question (referral code)
+    // This prevents the analyzing screen loop
+    router.replace(`/onboarding/q/${lastQuestionIndex}`);
   };
 
   const progressValue = 1; // show full progress (100%) for the sign-up screen

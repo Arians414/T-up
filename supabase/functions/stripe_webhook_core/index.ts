@@ -6,7 +6,8 @@ import { serve } from "https://deno.land/std@0.224.0/http/server.ts";
  * Handles core subscription lifecycle events.
  */
 
-import { getAdminClient, jsonResponse } from "../_shared/db.ts";
+import { getAdminClient } from "../_shared/db.ts";
+import { jsonResponse } from "../_shared/http.ts";
 import { getStripeClient, getStripeWebhookSecret, assertStripeConfigured } from "../_shared/stripe.ts";
 import { computeNextDueAt19Local, logToAppLogs } from "../_shared/utils.ts";
 
@@ -24,7 +25,14 @@ serve(async (req) => {
 
   const stripe = getStripeClient();
   const webhookSecret = getStripeWebhookSecret();
+  
+  // Debug: Log webhook secret info (don't log the actual secret, just metadata)
+  console.log("[stripe_webhook_core] Webhook secret exists:", !!webhookSecret);
+  console.log("[stripe_webhook_core] Webhook secret length:", webhookSecret?.length ?? 0);
+  console.log("[stripe_webhook_core] Webhook secret starts with 'whsec_':", webhookSecret?.startsWith("whsec_"));
+  
   if (!stripe || !webhookSecret) {
+    console.error("[stripe_webhook_core] Missing Stripe client or webhook secret");
     return jsonResponse(503, { ok: false, error: "stripe_not_configured" });
   }
 
@@ -38,8 +46,10 @@ serve(async (req) => {
   let event: Stripe.Event;
   try {
     event = stripe.webhooks.constructEvent(rawBody, signature, webhookSecret);
+    console.log("[stripe_webhook_core] Successfully verified webhook signature for event:", event.type);
   } catch (error) {
-    console.error("stripe_webhook_core invalid_signature", error);
+    console.error("[stripe_webhook_core] Signature verification failed:", error);
+    console.error("[stripe_webhook_core] Signature from header:", signature?.substring(0, 50) + "...");
     return jsonResponse(401, { ok: false, error: "invalid_signature" });
   }
 

@@ -58,7 +58,20 @@ export default function SignUpVerify() {
 
       console.log('[fn] link_anonymous_p1_to_user start');
       const installId = await getOrCreateInstallId();
-      await post('/link_anonymous_p1_to_user', { install_id: installId }, accessToken);
+      const linkResult = await post<{ ok: boolean; submission_id?: string; linked?: boolean }>(
+        '/link_anonymous_p1_to_user', 
+        { install_id: installId }, 
+        accessToken
+      );
+
+      // Link referral code if user entered one
+      console.log('[fn] link_referral_on_signup start');
+      try {
+        await post('/link_referral_on_signup', { install_id: installId }, accessToken);
+      } catch (referralError) {
+        // Don't fail signup if referral linking fails
+        console.warn('[fn] referral linking failed (non-critical)', referralError);
+      }
 
       const trimmedName = options?.name?.trim();
       if (trimmedName && trimmedName.length > 0) {

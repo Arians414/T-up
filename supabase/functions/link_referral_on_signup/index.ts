@@ -10,7 +10,8 @@ import { serve } from "https://deno.land/std@0.224.0/http/server.ts";
  *   - { ok:true, data:{ linked:true, code, creator_id } } on successful link
  */
 
-import { getAdminClient, jsonResponse, logRequest, nowIso, readJson } from "../_shared/db.ts";
+import { getAdminClient, logRequest, nowIso, readJson } from "../_shared/db.ts";
+import { jsonResponse } from "../_shared/http.ts";
 import { requireString } from "../_shared/validation.ts";
 import { getSupabaseClientWithAuth } from "../_shared/utils.ts";
 
@@ -65,7 +66,7 @@ serve(async (req) => {
       });
     }
 
-    // Lookup captured session
+    // Lookup captured session (URL-based referrals)
     const { data: session, error: sessionError } = await supabase
       .from("referral_sessions")
       .select("code_id, creator_id, referral_codes(code)")
@@ -77,20 +78,65 @@ serve(async (req) => {
       return jsonResponse(500, { ok: false, error: "lookup_failed" });
     }
 
-    if (!session) {
+    let codeId: string | null = null;
+    let creatorId: string | null = null;
+    let code: string | null = null;
+
+    if (session) {
+      // Found URL-based referral
+      codeId = session.code_id;
+      creatorId = session.creator_id;
+      code = session.referral_codes?.code ?? null;
+    } else {
+      // Check anonymous intake for manually entered referral code
+      const { data: intake, error: intakeError } = await supabase
+        .from("anonymous_intake_p1_submissions")
+        .select("payload")
+        .eq("install_id", installId)
+        .order("created_at", { ascending: false })
+        .limit(1)
+        .maybeSingle();
+
+      if (intakeError) {
+        console.error("link_referral_on_signup intake_lookup_failed", intakeError);
+      } else if (intake?.payload) {
+        const payload = intake.payload as Record<string, unknown>;
+        const referralCode = typeof payload.referral_code === "string" 
+          ? payload.referral_code.trim().toUpperCase() 
+          : null;
+
+        if (referralCode && referralCode.length > 0) {
+          // Look up the code in referral_codes table
+          const { data: codeData, error: codeError } = await supabase
+            .from("referral_codes")
+            .select("id, code, creator_id, active")
+            .eq("code", referralCode)
+            .eq("active", true)
+            .maybeSingle();
+
+          if (!codeError && codeData) {
+            codeId = codeData.id;
+            creatorId = codeData.creator_id;
+            code = codeData.code;
+          } else {
+            console.warn("link_referral_on_signup invalid_or_inactive_code", referralCode);
+          }
+        }
+      }
+    }
+
+    // No referral found (neither URL-based nor manual entry)
+    if (!codeId || !creatorId) {
       logRequest({ route: "link_referral_on_signup", user_id: userId, install_id: installId, code: null, linked: false });
       return jsonResponse(200, { ok: true, data: { linked: false } });
     }
-
-    let creatorId = session.creator_id;
-    let code = session.referral_codes?.code ?? null;
 
     const { error: insertError } = await supabase
       .from("referrals")
       .insert({
         user_id: userId,
-        code_id: session.code_id,
-        creator_id: session.creator_id,
+        code_id: codeId,
+        creator_id: creatorId,
       });
 
     if (insertError) {

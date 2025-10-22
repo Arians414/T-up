@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { Keyboard, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
+import { ActivityIndicator, Keyboard, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import DateTimePicker, { DateTimePickerEvent } from "@react-native-community/datetimepicker";
 import { useLocalSearchParams, useRouter } from "expo-router";
@@ -39,6 +39,9 @@ type Question = {
   step?: number;
   unit?: string;
   dependsOn?: DependsOnDefinition;
+  placeholder?: string;
+  maxLength?: number;
+  subtitle?: string;
 };
 
 const JEANS_SIZE_OPTIONS = JEANS_WAIST_SIZES.map((size) => ({ label: size, value: size }));
@@ -51,7 +54,8 @@ type StepDefinition =
   | { kind: "chips"; question: Question; options: string[] }
   | { kind: "chipsNumber"; question: Question; options: Array<{ label: string; value: number }> }
   | { kind: "yesNo"; question: Question }
-  | { kind: "numeric"; question: Question; min: number; max: number; step: number; unit?: string; defaultValue?: number };
+  | { kind: "numeric"; question: Question; min: number; max: number; step: number; unit?: string; defaultValue?: number }
+  | { kind: "text"; question: Question; placeholder?: string; maxLength?: number; subtitle?: string };
 
 type HeightWeightUnit = "metric" | "imperial";
 
@@ -117,6 +121,13 @@ const buildPart1Steps = (answers: IntakeAnswers): StepDefinition[] => {
             const step = typeof question.step === "number" && question.step > 0 ? question.step : 1;
             const defaultValue = 0;
             steps.push({ kind: "numeric", question, min, max, step, unit: question.unit, defaultValue });
+            break;
+          }
+          case "text": {
+            const placeholder = typeof question.placeholder === "string" ? question.placeholder : "Enter text";
+            const maxLength = typeof question.maxLength === "number" ? question.maxLength : undefined;
+            const subtitle = typeof question.subtitle === "string" ? question.subtitle : undefined;
+            steps.push({ kind: "text", question, placeholder, maxLength, subtitle });
             break;
           }
           default:
@@ -298,8 +309,12 @@ export default function OnboardingQuestion() {
       });
       console.log("[fn] save_anonymous_p1 ok", response?.submission_id ?? response);
     } catch (error) {
-      const message = error instanceof Error ? error.message : String(error);
-      console.error("[fn] save_anonymous_p1 error", message);
+      // Silent catch - data is saved even if there's a client-side error
+      // This prevents cosmetic errors from blocking user progress
+      if (__DEV__) {
+        const message = error instanceof Error ? error.message : String(error);
+        console.warn("[fn] save_anonymous_p1 client error (non-blocking)", message);
+      }
     }
   }, [part1Answers]);
 
@@ -670,6 +685,90 @@ export default function OnboardingQuestion() {
     );
   };
 
+  const renderText = (stepDef: Extract<StepDefinition, { kind: "text" }>) => {
+    const current = part1Answers[stepDef.question.id];
+    const cachedValid = part1Answers[`${stepDef.question.id}_valid`];
+    const [value, setValue] = useState(typeof current === "string" ? current : "");
+    
+    // Initialize validation state from cache if available
+    const initialValidationState = (() => {
+      if (!current || current.length === 0) return "idle";
+      if (typeof cachedValid === "boolean") {
+        return cachedValid ? "valid" : "invalid";
+      }
+      return "idle";
+    })();
+    const [validationState, setValidationState] = useState<"idle" | "checking" | "valid" | "invalid">(initialValidationState);
+    
+    // Debounce validation - show spinner and check backend after 2 seconds
+    useEffect(() => {
+      if (!value || value.trim().length === 0) {
+        setValidationState("idle");
+        return;
+      }
+      
+      // Show spinner and validate after 2 seconds
+      const timer = setTimeout(async () => {
+        setValidationState("checking");
+        try {
+          // Validate referral code against backend
+          const response = await post<{ valid: boolean; code_id?: string; creator_id?: string }>(
+            "/validate_referral_code",
+            { code: value.trim().toUpperCase() }
+          );
+          
+          const isValid = response?.valid ?? false;
+          setValidationState(isValid ? "valid" : "invalid");
+          
+          // Save validation result to prevent re-checking on back navigation
+          setAnswer(1, `${stepDef.question.id}_valid`, isValid);
+        } catch (error) {
+          console.error("[referral] validation failed", error);
+          // On error, show as invalid
+          setValidationState("invalid");
+          setAnswer(1, `${stepDef.question.id}_valid`, false);
+        }
+      }, 2000);
+      
+      return () => clearTimeout(timer);
+    }, [value]);
+    
+    const handleChange = (text: string) => {
+      setValue(text);
+      setAnswer(1, stepDef.question.id, text);
+    };
+    
+    return (
+      <View style={{ gap: getSpacing("16") }}>
+        <View style={[styles.textInputContainer, { backgroundColor: getColor("surface.button"), borderColor: getColor("border.muted") }]}>
+          <TextInput
+            value={value}
+            onChangeText={handleChange}
+            placeholder={stepDef.placeholder}
+            placeholderTextColor={themeTokens.colors.text.muted}
+            style={[styles.textInput, { color: themeTokens.colors.text.primary }]}
+            maxLength={stepDef.maxLength}
+            autoCapitalize="characters"
+            autoCorrect={false}
+          />
+          {validationState !== "idle" && (
+            <View style={styles.validationIndicator}>
+              {validationState === "checking" && (
+                <ActivityIndicator size="small" color={getColor("accent.brand")} />
+              )}
+              {validationState === "valid" && (
+                <Text style={{ color: getColor("accent.brand"), fontSize: 20 }}>✓</Text>
+              )}
+              {validationState === "invalid" && (
+                <Text style={{ color: getColor("accent.negative"), fontSize: 20 }}>✕</Text>
+              )}
+            </View>
+          )}
+        </View>
+      </View>
+    );
+  };
+
   const renderControl = () => {
     switch (currentStep.kind) {
       case "age":
@@ -688,6 +787,8 @@ export default function OnboardingQuestion() {
         return renderNumeric(currentStep);
       case "yesNo":
         return renderYesNo(currentStep);
+      case "text":
+        return renderText(currentStep);
       default:
         return null;
     }
@@ -714,12 +815,16 @@ export default function OnboardingQuestion() {
         return typeof answers[step.question.id] === "number";
       case "yesNo":
         return typeof answers[step.question.id] === "boolean";
+      case "text":
+        // Text input is optional, user can always proceed
+        return true;
       default:
         return false;
     }
   };
 
   const nextDisabled = !isStepAnswered(currentStep, part1Answers);
+  const isLastQuestion = stepIndex >= maxStepIndex;
   const questionLabel = (() => {
     switch (currentStep.kind) {
       case "heightWeight":
@@ -734,12 +839,16 @@ export default function OnboardingQuestion() {
         return currentStep.height.help ?? currentStep.weight.help;
       case "age":
         return currentStep.question.help;
+      case "text":
+        return currentStep.subtitle ?? currentStep.question.help;
       default:
         return currentStep.question.help;
     }
   })();
 
-  const progressValue = maxTotalSteps > 0 ? Math.min((stepIndex + 1) / (maxTotalSteps + 1), 0.99) : 0;
+  // Dynamic progress: reaches 90% on the last question
+  // Sign-up screen will show 100%
+  const progressValue = maxTotalSteps > 0 ? Math.min((stepIndex + 1) / maxTotalSteps * 0.9, 0.9) : 0;
 
   return (
     <SafeAreaScreen scroll={false}>
@@ -789,7 +898,7 @@ export default function OnboardingQuestion() {
         </ScrollView>
 
         <View style={styles.footer}>
-          <Button label="Next" onPress={handleNext} disabled={nextDisabled} />
+          <Button label={isLastQuestion ? "FINISH" : "Next"} onPress={handleNext} disabled={nextDisabled} />
         </View>
       </View>
     </SafeAreaScreen>
@@ -951,5 +1060,25 @@ const styles = StyleSheet.create({
     fontFamily: "Inter_600SemiBold",
     fontSize: 14,
     color: getColor("text.primary"),
+  },
+  textInputContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    borderRadius: getRadius("control"),
+    borderWidth: 1,
+    paddingHorizontal: getSpacing("16"),
+    paddingVertical: getSpacing("14"),
+    gap: getSpacing("12"),
+  },
+  textInput: {
+    flex: 1,
+    fontFamily: "Inter_400Regular",
+    fontSize: theme.typography.scale.md,
+  },
+  validationIndicator: {
+    width: 24,
+    height: 24,
+    alignItems: "center",
+    justifyContent: "center",
   },
 });

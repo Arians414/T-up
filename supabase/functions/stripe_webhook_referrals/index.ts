@@ -5,24 +5,27 @@ import { serve } from "https://deno.land/std@0.224.0/http/server.ts";
  * Handles Stripe invoice events for referral revenue logging.
  */
 
-import { getAdminClient, jsonResponse, logToAppLogs } from "../_shared/db.ts";
+import { getAdminClient } from "../_shared/db.ts";
+import { jsonResponse } from "../_shared/http.ts";
+import { logToAppLogs } from "../_shared/utils.ts";
 import { getStripeClient, getStripeWebhookSecret } from "../_shared/stripe.ts";
 import Stripe from "https://esm.sh/stripe@14.23.0?target=deno&deno-std=0.224.0";
 
 serve(async (req) => {
   if (req.method !== "POST") {
-    return jsonResponse({ ok: false, error: "method_not_allowed" }, 405);
+    return jsonResponse(405, { ok: false, error: "method_not_allowed" });
   }
 
   const stripe = getStripeClient();
   const webhookSecret = getStripeWebhookSecret();
   if (!stripe || !webhookSecret) {
-    return jsonResponse({ ok: false, error: "stripe_unavailable" }, 503);
+    console.error("stripe_webhook_referrals: Missing STRIPE_SECRET_KEY or STRIPE_WEBHOOK_SECRET");
+    return jsonResponse(503, { ok: false, error: "stripe_unavailable" });
   }
 
   const signature = req.headers.get("stripe-signature");
   if (!signature) {
-    return jsonResponse({ ok: false, error: "missing_signature" }, 400);
+    return jsonResponse(400, { ok: false, error: "missing_signature" });
   }
 
   const rawBody = await req.text();
@@ -32,7 +35,7 @@ serve(async (req) => {
     event = stripe.webhooks.constructEvent(rawBody, signature, webhookSecret);
   } catch (error) {
     console.error("stripe_webhook_referrals invalid_signature", error);
-    return jsonResponse({ ok: false, error: "invalid_signature" }, 401);
+    return jsonResponse(401, { ok: false, error: "invalid_signature" });
   }
 
   const supabase = getAdminClient();
@@ -63,7 +66,7 @@ serve(async (req) => {
     });
   }
 
-  return jsonResponse({ ok: true }, 200);
+  return jsonResponse(200, { ok: true });
 });
 
 const handleInvoicePaymentSucceeded = async (

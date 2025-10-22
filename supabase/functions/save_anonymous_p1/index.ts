@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std@0.224.0/http/server.ts";
-import { getServiceSupabaseClient, jsonResponse, logToAppLogs, corsHeaders, z } from "../_shared/utils.ts";
+import { getServiceSupabaseClient, logToAppLogs, z } from "../_shared/utils.ts";
+import { jsonResponse, corsHeaders } from "../_shared/http.ts";
 
 const requestSchema = z.object({
   install_id: z.string().uuid(),
@@ -45,27 +46,66 @@ serve(async (req) => {
 
   try {
     const supabase = getServiceSupabaseClient();
-    const { data, error } = await supabase
+    
+    // Check if submission already exists for this install_id (not linked to user yet)
+    const { data: existing } = await supabase
       .from("anonymous_intake_p1_submissions")
-      .insert({
-        install_id: parsed.install_id,
-        payload: parsed.payload,
-        schema_version: parsed.schema_version,
-        intake_locked: false,
-      })
       .select("submission_id")
-      .single();
+      .eq("install_id", parsed.install_id)
+      .is("linked_user_id", null)
+      .order("created_at", { ascending: false })
+      .limit(1)
+      .maybeSingle();
 
-    if (error) {
-      await logToAppLogs({
-        event: "save_anonymous_p1",
-        source: "edge",
-        details: { supabaseError: error },
-      });
-      return jsonResponse({ ok: false, error: "Failed to save intake" }, 500);
+    let submissionId: string;
+    
+    if (existing) {
+      // Update existing submission instead of creating duplicate
+      const { data, error } = await supabase
+        .from("anonymous_intake_p1_submissions")
+        .update({
+          payload: parsed.payload,
+          schema_version: parsed.schema_version,
+          updated_at: new Date().toISOString(),
+        })
+        .eq("submission_id", existing.submission_id)
+        .select("submission_id")
+        .single();
+
+      if (error) {
+        await logToAppLogs({
+          event: "save_anonymous_p1",
+          source: "edge",
+          details: { supabaseError: error, action: "update" },
+        });
+        return jsonResponse({ ok: false, error: "Failed to update intake" }, 500);
+      }
+      submissionId = data.submission_id;
+    } else {
+      // Create new submission
+      const { data, error } = await supabase
+        .from("anonymous_intake_p1_submissions")
+        .insert({
+          install_id: parsed.install_id,
+          payload: parsed.payload,
+          schema_version: parsed.schema_version,
+          intake_locked: false,
+        })
+        .select("submission_id")
+        .single();
+
+      if (error) {
+        await logToAppLogs({
+          event: "save_anonymous_p1",
+          source: "edge",
+          details: { supabaseError: error, action: "insert" },
+        });
+        return jsonResponse({ ok: false, error: "Failed to save intake" }, 500);
+      }
+      submissionId = data.submission_id;
     }
 
-    return jsonResponse({ ok: true, submission_id: data.submission_id });
+    return jsonResponse({ ok: true, submission_id: submissionId });
   } catch (error) {
     await logToAppLogs({
       event: "save_anonymous_p1",

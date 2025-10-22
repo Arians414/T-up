@@ -20,27 +20,7 @@ if (!ANON_KEY) {
 
 let serviceClient: SupabaseClient | null = null;
 
-export const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Methods": "POST, GET, OPTIONS",
-  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
-};
-
-export const jsonResponse = (
-  body: Record<string, unknown>,
-  status = 200,
-  extraHeaders: Record<string, string> = {},
-): Response => {
-  return new Response(JSON.stringify(body), {
-    status,
-    headers: {
-      "Content-Type": "application/json",
-      "Cache-Control": "no-store",
-      ...corsHeaders,
-      ...extraHeaders,
-    },
-  });
-};
+// Removed jsonResponse and corsHeaders - use standardized versions from http.ts instead
 
 export const getServiceSupabaseClient = (): SupabaseClient => {
   if (!serviceClient) {

@@ -39,6 +39,9 @@ export default function PaywallScreen() {
 
   const trialCtaLabel = useMemo(() => `Start ${paywallConfig.trialDays}-day trial`, []);
 
+  // DEV-ONLY: Log access token for debugging auth issues
+  // This helps verify user is authenticated before starting trial
+  // SAFE: Only runs in development mode (__DEV__), tokens not exposed in production
   useEffect(() => {
     if (!__DEV__) {
       return;

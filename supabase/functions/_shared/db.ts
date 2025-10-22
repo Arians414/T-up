@@ -1,4 +1,5 @@
 import { createClient, SupabaseClient } from "https://esm.sh/@supabase/supabase-js@2.42.5";
+import { jsonResponse } from "./http.ts";
 
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL") ?? "";
 const SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "";
@@ -46,14 +47,7 @@ export const readJson = async <T = JsonValue>(req: Request): Promise<T | null> =
   }
 };
 
-export const jsonResponse = (status: number, body: JsonValue): Response =>
-  new Response(JSON.stringify(body), {
-    status,
-    headers: {
-      "Content-Type": "application/json",
-      "Cache-Control": "no-store",
-    },
-  });
+// Removed jsonResponse - use the standardized version from http.ts instead
 
 export const ensureServiceRole = (req: Request): Response | null => {
   const header = req.headers.get("Authorization") ?? "";

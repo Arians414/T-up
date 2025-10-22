@@ -122,6 +122,15 @@
       "label": "Lost drive or clarity in life?",
       "required": true,
       "engineKey": "lost_drive"
+    },
+    {
+      "id": "referral_code",
+      "type": "text",
+      "label": "Enter referral code (optional)",
+      "subtitle": "You can skip this step",
+      "placeholder": "Referral Code",
+      "required": false,
+      "maxLength": 20
     }
   ]
 }
