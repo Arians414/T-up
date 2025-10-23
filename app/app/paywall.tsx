@@ -60,6 +60,8 @@ export default function PaywallScreen() {
     });
   }, []);
 
+  // TODO: Replace with RevenueCat purchase flow when Apple Developer account is ready
+  // Will call: purchasePackage(offering.monthly) -> redirect to Intake 2 on success
   const handleStartTrial = useCallback(async () => {
     if (isSubmitting || isHydrating || hasTrialStarted) {
       return;
